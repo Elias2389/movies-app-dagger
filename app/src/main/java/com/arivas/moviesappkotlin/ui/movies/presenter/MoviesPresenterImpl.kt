@@ -6,9 +6,9 @@ import com.arivas.moviesappkotlin.ui.movies.interactor.MoviesInteractor
 import com.arivas.moviesappkotlin.ui.movies.interactor.MoviesInteractorImpl
 import com.arivas.moviesappkotlin.ui.movies.view.MoviesView
 
-class MoviesPresenterImpl(private val view: MoviesView, private val service: RetrofitService): MoviesPresenter {
+class MoviesPresenterImpl(private val view: MoviesView): MoviesPresenter {
 
-    private val interactor: MoviesInteractor = MoviesInteractorImpl(this, service)
+    private val interactor: MoviesInteractor = MoviesInteractorImpl(this)
 
     override fun popularMovies() {
         interactor.popularMovies()

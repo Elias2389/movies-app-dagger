@@ -13,7 +13,6 @@ import com.arivas.moviesappkotlin.ui.movies.adapter.PopularMoviesRecyclerView
 import com.arivas.moviesappkotlin.ui.movies.presenter.MoviesPresenter
 import com.arivas.moviesappkotlin.ui.movies.presenter.MoviesPresenterImpl
 import io.supercharge.shimmerlayout.ShimmerLayout
-import org.koin.android.ext.android.inject
 
 
 class MoviesActivity : AppCompatActivity(), MoviesView {
@@ -23,7 +22,6 @@ class MoviesActivity : AppCompatActivity(), MoviesView {
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var shimmerLayout: ShimmerLayout? = null
     private var container: LinearLayout? = null
-    private val service: RetrofitService by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +55,7 @@ class MoviesActivity : AppCompatActivity(), MoviesView {
     }
 
     override fun createPresenter() {
-        presenter = MoviesPresenterImpl(this, service)
+        presenter = MoviesPresenterImpl(this)
     }
 
     private fun showShimmer() {

@@ -7,15 +7,20 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.LinearLayout
 import com.arivas.moviesappkotlin.R
+import com.arivas.moviesappkotlin.application.BaseApp
 import com.arivas.moviesappkotlin.common.dto.MoviesResponse
 import com.arivas.moviesappkotlin.common.network.RetrofitService
+import com.arivas.moviesappkotlin.common.network.services.MoviesServices
 import com.arivas.moviesappkotlin.ui.movies.adapter.PopularMoviesRecyclerView
 import com.arivas.moviesappkotlin.ui.movies.presenter.MoviesPresenter
 import com.arivas.moviesappkotlin.ui.movies.presenter.MoviesPresenterImpl
 import io.supercharge.shimmerlayout.ShimmerLayout
+import retrofit2.Retrofit
+import javax.inject.Inject
 
 
 class MoviesActivity : AppCompatActivity(), MoviesView {
+
     private var presenter: MoviesPresenter? = null
     private var recyclerView: RecyclerView? = null
     private var mAdapter: RecyclerView.Adapter<*>? = null
@@ -23,9 +28,13 @@ class MoviesActivity : AppCompatActivity(), MoviesView {
     private var shimmerLayout: ShimmerLayout? = null
     private var container: LinearLayout? = null
 
+    @Inject lateinit var moviesServices: MoviesServices
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as BaseApp).getComponent().inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
         shimmerLayout = findViewById(R.id.shimmer)
         container = findViewById(R.id.container_info)
@@ -55,7 +64,7 @@ class MoviesActivity : AppCompatActivity(), MoviesView {
     }
 
     override fun createPresenter() {
-        presenter = MoviesPresenterImpl(this)
+        presenter = MoviesPresenterImpl(this, moviesServices)
     }
 
     private fun showShimmer() {

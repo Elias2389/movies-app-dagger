@@ -21,7 +21,6 @@ import javax.inject.Inject
 
 class MoviesActivity : AppCompatActivity(), MoviesView {
 
-    private var presenter: MoviesPresenter? = null
     private var recyclerView: RecyclerView? = null
     private var mAdapter: RecyclerView.Adapter<*>? = null
     private var layoutManager: RecyclerView.LayoutManager? = null
@@ -29,23 +28,28 @@ class MoviesActivity : AppCompatActivity(), MoviesView {
     private var container: LinearLayout? = null
 
     @Inject lateinit var moviesServices: MoviesServices
+    @Inject lateinit var presenter: MoviesPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as BaseApp).getComponent().inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        (application as BaseApp).getComponent().inject(this)
 
         shimmerLayout = findViewById(R.id.shimmer)
         container = findViewById(R.id.container_info)
         recyclerView = findViewById(R.id.recycler_view)
 
-        createPresenter()
+        setup()
+    }
+
+    private fun setup() {
+        setView()
         popularMovies()
     }
 
     override fun popularMovies() {
-        presenter?.popularMovies()
+        presenter.popularMovies()
         showShimmer()
     }
 
@@ -63,10 +67,6 @@ class MoviesActivity : AppCompatActivity(), MoviesView {
 
     }
 
-    override fun createPresenter() {
-        presenter = MoviesPresenterImpl(this, moviesServices)
-    }
-
     private fun showShimmer() {
         shimmerLayout?.startShimmerAnimation()
         shimmerLayout?.visibility = View.VISIBLE
@@ -78,4 +78,9 @@ class MoviesActivity : AppCompatActivity(), MoviesView {
         shimmerLayout?.visibility = View.GONE
         shimmerLayout?.stopShimmerAnimation()
     }
+
+    override fun setView() {
+        presenter.getView(this)
+    }
+
 }

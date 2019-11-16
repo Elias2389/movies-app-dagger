@@ -6,11 +6,10 @@ import com.arivas.moviesappkotlin.ui.movies.interactor.MoviesInteractor
 import com.arivas.moviesappkotlin.ui.movies.interactor.MoviesInteractorImpl
 import com.arivas.moviesappkotlin.ui.movies.view.MoviesView
 
-class MoviesPresenterImpl(private val view: MoviesView,
-                          private val moviesServices: MoviesServices
-): MoviesPresenter {
+class MoviesPresenterImpl(private val moviesServices: MoviesServices): MoviesPresenter {
 
     private val interactor: MoviesInteractor = MoviesInteractorImpl(this, moviesServices)
+    lateinit var view: MoviesView
 
     override fun popularMovies() {
         interactor.popularMovies()
@@ -22,5 +21,9 @@ class MoviesPresenterImpl(private val view: MoviesView,
 
     override fun error() {
         view.error()
+    }
+
+    override fun getView(moviesView: MoviesView) {
+        view = moviesView
     }
 }

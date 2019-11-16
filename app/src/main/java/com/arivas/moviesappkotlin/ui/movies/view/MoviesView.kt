@@ -21,5 +21,5 @@ interface MoviesView {
     /**
      * Create presenter
      */
-    fun createPresenter()
+    fun setView()
 }

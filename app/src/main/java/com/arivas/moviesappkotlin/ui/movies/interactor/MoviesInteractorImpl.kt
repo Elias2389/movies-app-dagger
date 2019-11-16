@@ -17,8 +17,9 @@ import retrofit2.Retrofit
 import javax.inject.Inject
 
 
-class MoviesInteractorImpl(private val presenter: MoviesPresenter,
-                          private val moviesServices: MoviesServices): MoviesInteractor {
+class MoviesInteractorImpl(private val moviesServices: MoviesServices): MoviesInteractor {
+
+    lateinit var presenter: MoviesPresenter
 
     @SuppressLint("CheckResult")
     override fun popularMovies() {
@@ -43,5 +44,9 @@ class MoviesInteractorImpl(private val presenter: MoviesPresenter,
 
     private fun getCall(): Observable<MoviesResponse> {
         return moviesServices.getPopularMovies(BuildConfig.API_KEY)
+    }
+
+    override fun getPresenter(moviesPresenter: MoviesPresenter) {
+        presenter = moviesPresenter
     }
 }

@@ -5,6 +5,8 @@ import android.content.Context
 import com.arivas.moviesappkotlin.BuildConfig
 import com.arivas.moviesappkotlin.application.BaseApp
 import com.arivas.moviesappkotlin.common.network.services.MoviesServices
+import com.arivas.moviesappkotlin.ui.movies.interactor.MoviesInteractor
+import com.arivas.moviesappkotlin.ui.movies.interactor.MoviesInteractorImpl
 import com.arivas.moviesappkotlin.ui.movies.presenter.MoviesPresenter
 import com.arivas.moviesappkotlin.ui.movies.presenter.MoviesPresenterImpl
 import com.arivas.moviesappkotlin.ui.movies.view.MoviesActivity
@@ -50,8 +52,15 @@ class ApplicationModule(private val application: Application) {
 
     @Provides
     @Singleton
-    fun provideMoviesPresenter(moviesServices: MoviesServices): MoviesPresenter {
-        return MoviesPresenterImpl(moviesServices)
+    fun provideMoviesPresenter(moviesServices: MoviesServices,
+                               interactor: MoviesInteractor): MoviesPresenter {
+        return MoviesPresenterImpl(moviesServices, interactor)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMoviesInteractor(moviesServices: MoviesServices): MoviesInteractor {
+        return MoviesInteractorImpl(moviesServices)
     }
 
 }

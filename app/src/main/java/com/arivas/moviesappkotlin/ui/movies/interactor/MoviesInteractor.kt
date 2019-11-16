@@ -1,6 +1,7 @@
 package com.arivas.moviesappkotlin.ui.movies.interactor
 
 import com.arivas.moviesappkotlin.common.dto.MoviesResponse
+import com.arivas.moviesappkotlin.ui.movies.presenter.MoviesPresenter
 
 interface MoviesInteractor {
     /**
@@ -17,4 +18,9 @@ interface MoviesInteractor {
      * On error
      */
     fun error()
+
+    /**
+     * GetPresenter
+     */
+    fun getPresenter(moviesPresenter: MoviesPresenter)
 }

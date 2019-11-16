@@ -23,4 +23,9 @@ interface MoviesPresenter {
      * Set view
      */
     fun getView(moviesView: MoviesView)
+
+    /**
+     * Set presenter
+     */
+    fun setPresenter()
 }

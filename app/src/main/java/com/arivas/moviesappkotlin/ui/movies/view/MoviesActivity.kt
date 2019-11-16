@@ -36,16 +36,19 @@ class MoviesActivity : AppCompatActivity(), MoviesView {
 
         (application as BaseApp).getComponent().inject(this)
 
-        shimmerLayout = findViewById(R.id.shimmer)
-        container = findViewById(R.id.container_info)
-        recyclerView = findViewById(R.id.recycler_view)
-
+        setViews()
         setup()
     }
 
     private fun setup() {
         setView()
         popularMovies()
+    }
+
+    private fun setViews() {
+        shimmerLayout = findViewById(R.id.shimmer)
+        container = findViewById(R.id.container_info)
+        recyclerView = findViewById(R.id.recycler_view)
     }
 
     override fun popularMovies() {

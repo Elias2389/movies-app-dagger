@@ -62,7 +62,7 @@ class MoviesActivity : AppCompatActivity(), MoviesView {
         layoutManager = LinearLayoutManager(this)
         recyclerView?.layoutManager = layoutManager
 
-        mAdapter = PopularMoviesRecyclerView(movies.results!!)
+        mAdapter = PopularMoviesRecyclerView(movies.results!!, this)
         recyclerView?.adapter = mAdapter
     }
 

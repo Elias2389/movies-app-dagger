@@ -16,9 +16,9 @@
             android:layout_height="180dp"
             android:layout_marginEnd="@dimen/margin_item"
             android:layout_marginRight="@dimen/margin_item" />
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="@dimen/margin_item"
             >
@@ -27,17 +27,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/title_size"
-                android:gravity="center"
                 tools:text="Title"
+                android:layout_centerInParent="true"
+                android:gravity="center"
                 />
-            <TextView
-                android:id="@+id/content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                tools:text="text"
-                />
-        </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 

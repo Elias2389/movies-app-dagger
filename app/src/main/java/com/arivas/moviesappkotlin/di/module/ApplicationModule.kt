@@ -14,6 +14,8 @@ import com.arivas.moviesappkotlin.ui.movies.view.MoviesView
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -36,9 +38,24 @@ class ApplicationModule(private val application: Application) {
 
     @Provides
     @Singleton
-    fun provideRetrofitInterface(): Retrofit {
+    fun provideHttpLogginInterceptor(): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+    }
+
+    @Provides
+    @Singleton
+    fun provideHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(httpLoggingInterceptor)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRetrofitInterface(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()

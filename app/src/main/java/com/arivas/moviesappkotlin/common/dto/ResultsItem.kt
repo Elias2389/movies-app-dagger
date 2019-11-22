@@ -1,6 +1,7 @@
 package com.arivas.moviesappkotlin.common.dto
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class ResultsItem(@SerializedName("overview")
                        val overview: String = "",
@@ -29,4 +30,4 @@ data class ResultsItem(@SerializedName("overview")
                        @SerializedName("adult")
                        val adult: Boolean = false,
                        @SerializedName("vote_count")
-                       val voteCount: Int = 0)
+                       val voteCount: Int = 0): Serializable

@@ -2,16 +2,13 @@ package com.arivas.moviesappkotlin.di.module
 
 import android.app.Application
 import android.content.Context
+import androidx.lifecycle.ViewModelProvider
 import com.arivas.moviesappkotlin.BuildConfig
-import com.arivas.moviesappkotlin.application.BaseApp
 import com.arivas.moviesappkotlin.common.network.services.MoviesServices
-import com.arivas.moviesappkotlin.ui.movies.interactor.MoviesInteractor
-import com.arivas.moviesappkotlin.ui.movies.interactor.MoviesInteractorImpl
-import com.arivas.moviesappkotlin.ui.movies.presenter.MoviesPresenter
-import com.arivas.moviesappkotlin.ui.movies.presenter.MoviesPresenterImpl
-import com.arivas.moviesappkotlin.ui.movies.view.MoviesActivity
-import com.arivas.moviesappkotlin.ui.movies.view.MoviesView
-import dagger.Binds
+import com.arivas.moviesappkotlin.ui.movies.model.MoviesObservable
+import com.arivas.moviesappkotlin.ui.movies.repository.MoviesRepository
+import com.arivas.moviesappkotlin.ui.movies.repository.MoviesRepositoryImpl
+import com.arivas.moviesappkotlin.ui.movies.viewmodel.MoviesViewModel
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -69,15 +66,19 @@ class ApplicationModule(private val application: Application) {
 
     @Provides
     @Singleton
-    fun provideMoviesPresenter(moviesServices: MoviesServices,
-                               interactor: MoviesInteractor): MoviesPresenter {
-        return MoviesPresenterImpl(moviesServices, interactor)
+    fun provideMoviesRepository(moviesServices: MoviesServices): MoviesRepository {
+        return MoviesRepositoryImpl(moviesServices)
     }
 
     @Provides
     @Singleton
-    fun provideMoviesInteractor(moviesServices: MoviesServices): MoviesInteractor {
-        return MoviesInteractorImpl(moviesServices)
+    fun provideMoviesObservable(moviesRepository: MoviesRepository): MoviesObservable {
+        return MoviesObservable(moviesRepository)
     }
 
+    @Provides
+    @Singleton
+    fun provideMoviesViewModel(moviesObservable: MoviesObservable): MoviesViewModel {
+        return MoviesViewModel(moviesObservable)
+    }
 }

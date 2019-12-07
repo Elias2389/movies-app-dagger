@@ -1,9 +1,9 @@
 package com.arivas.moviesappkotlin.ui.moviesdetail.view
 
 import android.content.ClipData
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.view.ViewCompat
+import androidx.core.view.ViewCompat
 import android.widget.TextView
 import com.arivas.moviesappkotlin.BuildConfig
 import com.arivas.moviesappkotlin.R

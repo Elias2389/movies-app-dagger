@@ -1,34 +1,33 @@
 package com.arivas.moviesappkotlin.ui.movies.view
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.arivas.moviesappkotlin.R
 import com.arivas.moviesappkotlin.application.BaseApp
 import com.arivas.moviesappkotlin.common.dto.MoviesResponse
-import com.arivas.moviesappkotlin.common.network.RetrofitService
-import com.arivas.moviesappkotlin.common.network.services.MoviesServices
 import com.arivas.moviesappkotlin.ui.movies.adapter.PopularMoviesRecyclerView
-import com.arivas.moviesappkotlin.ui.movies.presenter.MoviesPresenter
-import com.arivas.moviesappkotlin.ui.movies.presenter.MoviesPresenterImpl
+import com.arivas.moviesappkotlin.ui.movies.model.MoviesObservable
+import com.arivas.moviesappkotlin.ui.movies.viewmodel.MoviesViewModel
+import com.arivas.moviesappkotlin.ui.movies.viewmodel.MoviesViewModelFactory
 import io.supercharge.shimmerlayout.ShimmerLayout
-import retrofit2.Retrofit
 import javax.inject.Inject
 
 
-class MoviesActivity : AppCompatActivity(), MoviesView {
+class MoviesActivity : AppCompatActivity() {
 
-    private var recyclerView: RecyclerView? = null
-    private var mAdapter: RecyclerView.Adapter<*>? = null
-    private var layoutManager: RecyclerView.LayoutManager? = null
+    private var recyclerView: androidx.recyclerview.widget.RecyclerView? = null
+    private var mAdapter: androidx.recyclerview.widget.RecyclerView.Adapter<*>? = null
+    private var layoutManager: androidx.recyclerview.widget.RecyclerView.LayoutManager? = null
     private var shimmerLayout: ShimmerLayout? = null
     private var container: LinearLayout? = null
 
-    @Inject lateinit var moviesServices: MoviesServices
-    @Inject lateinit var presenter: MoviesPresenter
+    @Inject lateinit var moviesViewModel: MoviesViewModel
+    @Inject lateinit var moviesObservable: MoviesObservable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,13 +35,24 @@ class MoviesActivity : AppCompatActivity(), MoviesView {
 
         (application as BaseApp).getComponent().inject(this)
 
-        setViews()
         setup()
+        getMovies()
     }
 
     private fun setup() {
-        setView()
-        popularMovies()
+        setViews()
+        moviesViewModel = ViewModelProviders
+            .of(this, MoviesViewModelFactory(moviesObservable))
+            .get(MoviesViewModel::class.java)
+    }
+
+    private fun getMovies() {
+        moviesViewModel.popularMovies().let {
+            moviesViewModel.getPopularMovies().observe(this, Observer {
+                successPopularMovies(it)
+            })
+        }
+        showShimmer()
     }
 
     private fun setViews() {
@@ -51,23 +61,14 @@ class MoviesActivity : AppCompatActivity(), MoviesView {
         recyclerView = findViewById(R.id.recycler_view)
     }
 
-    override fun popularMovies() {
-        presenter.popularMovies()
-        showShimmer()
-    }
-
-    override fun successPopularMovies(movies: MoviesResponse) {
+    private fun successPopularMovies(movies: MoviesResponse) {
         hideShimmer()
 
-        layoutManager = LinearLayoutManager(this)
+        layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
         recyclerView?.layoutManager = layoutManager
 
         mAdapter = PopularMoviesRecyclerView(movies.results!!, this)
         recyclerView?.adapter = mAdapter
-    }
-
-    override fun error() {
-
     }
 
     private fun showShimmer() {
@@ -80,10 +81,6 @@ class MoviesActivity : AppCompatActivity(), MoviesView {
         recyclerView?.visibility = View.VISIBLE
         shimmerLayout?.visibility = View.GONE
         shimmerLayout?.stopShimmerAnimation()
-    }
-
-    override fun setView() {
-        presenter.getView(this)
     }
 
 }

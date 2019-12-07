@@ -14,7 +14,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         debug { //
@@ -27,6 +27,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 ext {
@@ -35,7 +39,7 @@ ext {
     gsonVersion = "2.8.5"
     supportVersion = "28.0.0"
     constrainLayoutVersion = "1.1.3"
-    frescoVersion = "1.13.0"
+    frescoVersion = "1.9.0"
     junitVersion = "4.12"
     runnerVersion = "1.0.2"
     expressoVersion = "3.0.2"
@@ -50,8 +54,8 @@ ext {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "com.android.support:appcompat-v7:$supportVersion"
-    implementation "com.android.support.constraint:constraint-layout:$constrainLayoutVersion"
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
@@ -60,26 +64,26 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$logginInterceptorVersion"
 
     //View
-    implementation "com.android.support:cardview-v7:$supportVersion"
-    implementation "com.android.support:recyclerview-v7:$supportVersion"
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
     //Fresco
     implementation "com.facebook.fresco:fresco:$frescoVersion"
 
     //Test
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation "junit:junit:$junitVersion"
-    androidTestImplementation "com.android.support.test:runner:$runnerVersion"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$expressoVersion"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 
     // Room components
-    implementation "android.arch.persistence.room:runtime:$roomVersion"
-    annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"
-    androidTestImplementation "android.arch.persistence.room:testing:$roomVersion"
+    implementation 'androidx.room:room-runtime:2.0.0'
+    annotationProcessor 'androidx.room:room-compiler:2.0.0'
+    androidTestImplementation 'androidx.room:room-testing:2.0.0'
 
     // Lifecycle components
-    implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
-    annotationProcessor "android.arch.lifecycle:compiler:$archLifecycleVersion"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.0.0'
 
     //RX java
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"

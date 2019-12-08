@@ -34,22 +34,25 @@ class MoviesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        (application as BaseApp).getComponent().inject(this)
-
+        setInjectComponent()
         setup()
         getMovies()
     }
 
     private fun setup() {
         setViews()
-        moviesViewModel = ViewModelProviders
-            .of(this, MoviesViewModelFactory(moviesObservable))
-            .get(MoviesViewModel::class.java)
+        moviesViewModel = getViewModelProvider()
+    }
+
+    private fun setInjectComponent() {
+        (application as BaseApp).getComponent().inject(this)
     }
 
     private fun getMovies() {
         moviesViewModel.popularMovies().let {
-            moviesViewModel.getPopularMovies().observe(this, Observer {
+            moviesViewModel
+                .getPopularMovies()
+                .observe(this, Observer {
                 successPopularMovies(it)
             })
         }
@@ -60,6 +63,12 @@ class MoviesActivity : AppCompatActivity() {
         shimmerLayout = findViewById(R.id.shimmer)
         container = findViewById(R.id.container_info)
         recyclerView = findViewById(R.id.recycler_view)
+    }
+
+    private fun getViewModelProvider(): MoviesViewModel {
+        return ViewModelProviders
+            .of(this, MoviesViewModelFactory(moviesObservable))
+            .get(MoviesViewModel::class.java)
     }
 
     private fun successPopularMovies(movies: MoviesResponse) {

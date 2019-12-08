@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.arivas.moviesappkotlin.R
 import com.arivas.moviesappkotlin.application.BaseApp
 import com.arivas.moviesappkotlin.common.dto.MoviesResponse
+import com.arivas.moviesappkotlin.common.dto.ResultsItem
 import com.arivas.moviesappkotlin.ui.movies.adapter.PopularMoviesRecyclerView
 import com.arivas.moviesappkotlin.ui.movies.model.MoviesObservable
 import com.arivas.moviesappkotlin.ui.movies.viewmodel.MoviesViewModel
@@ -63,11 +64,17 @@ class MoviesActivity : AppCompatActivity() {
 
     private fun successPopularMovies(movies: MoviesResponse) {
         hideShimmer()
+        setupAdapter()
+        setAdapter(movies.results)
+    }
 
+    private fun setupAdapter() {
         layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
         recyclerView?.layoutManager = layoutManager
+    }
 
-        mAdapter = PopularMoviesRecyclerView(movies.results!!, this)
+    private fun setAdapter(results: List<ResultsItem>) {
+        mAdapter = PopularMoviesRecyclerView(results, this)
         recyclerView?.adapter = mAdapter
     }
 

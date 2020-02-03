@@ -21,6 +21,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 class PopularMoviesRecyclerView(private val results: List<ResultsItem>,
                                 private val context: Context):
     RecyclerView.Adapter<PopularMoviesRecyclerView.ViewHolder>() {
+    var moviesList: List<ResultsItem> = results
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         val view = LayoutInflater.from(p0.context).inflate(
@@ -31,14 +32,18 @@ class PopularMoviesRecyclerView(private val results: List<ResultsItem>,
     }
 
     override fun getItemCount(): Int {
-        return results.size
+        if (moviesList != null) {
+            return moviesList.size
+        } else {
+            return 0
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-        viewHolder.title.text = results.get(i).title
-        viewHolder.img.setImageURI(BuildConfig.BASE_URL_IMAGES + results.get(i).posterPath)
-        goToDetail(viewHolder, results.get(i))
+        viewHolder.title.text = moviesList.get(i).title
+        viewHolder.img.setImageURI(BuildConfig.BASE_URL_IMAGES + moviesList.get(i).posterPath)
+        goToDetail(viewHolder, moviesList.get(i))
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -59,4 +64,5 @@ class PopularMoviesRecyclerView(private val results: List<ResultsItem>,
              context.startActivity(intent, option.toBundle())
         }
     }
+
 }

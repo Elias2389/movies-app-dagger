@@ -1,8 +1,8 @@
 package com.arivas.moviesappkotlin.ui.movies.repository
 
-import androidx.lifecycle.MutableLiveData
-import com.arivas.moviesappkotlin.common.dto.MoviesResponse
-import io.reactivex.Observable
+import androidx.lifecycle.LiveData
+import com.arivas.moviesappkotlin.common.dto.ResultsItem
+import com.arivas.moviesappkotlin.common.network.networkboundresource.Resource
 
 interface MoviesRepository {
     /**
@@ -13,12 +13,15 @@ interface MoviesRepository {
     /**
      * Get popular movies
      */
-    fun getPopularMovies(): MutableLiveData<MoviesResponse>
-
+    fun getPopularMovies(): LiveData<Resource<List<ResultsItem>>>
 
     /**
-     * On error
+     * Handler Error
      */
-    fun error()
+    fun handlerError(error: Throwable)
 
+    /**
+     * Insert in database
+     */
+    fun setMoviesInDatabase(resultsItem: List<ResultsItem>)
 }

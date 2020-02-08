@@ -13,7 +13,6 @@ class BaseApp: Application() {
     override fun onCreate() {
         super.onCreate()
 
-        //Initialize Fresco
         Fresco.initialize(this)
 
         component = DaggerApplicationComponent

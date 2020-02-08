@@ -1,32 +1,52 @@
 package com.arivas.moviesappkotlin.common.dto
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-data class ResultsItem(@SerializedName("overview")
-                       val overview: String = "",
-                       @SerializedName("original_language")
-                       val originalLanguage: String = "",
-                       @SerializedName("original_title")
-                       val originalTitle: String = "",
-                       @SerializedName("video")
-                       val video: Boolean = false,
-                       @SerializedName("title")
-                       val title: String = "",
-                       @SerializedName("genre_ids")
-                       val genreIds: List<Integer>?,
-                       @SerializedName("poster_path")
-                       val posterPath: String = "",
-                       @SerializedName("backdrop_path")
-                       val backdropPath: String = "",
-                       @SerializedName("release_date")
-                       val releaseDate: String = "",
-                       @SerializedName("vote_average")
-                       val voteAverage: Double = 0.0,
-                       @SerializedName("popularity")
-                       val popularity: Double = 0.0,
-                       @SerializedName("id")
-                       val id: Int = 0,
-                       @SerializedName("adult")
-                       val adult: Boolean = false,
-                       @SerializedName("vote_count")
-                       val voteCount: Int = 0)
+@Entity(tableName = "movies")
+data class ResultsItem(
+    @PrimaryKey(autoGenerate = true)
+    @SerializedName("id")
+    @ColumnInfo(name = "id")
+    var id: Int = 0,
+    @SerializedName("overview")
+    @ColumnInfo(name = "overview")
+    var overview: String = "",
+    @SerializedName("original_language")
+    @ColumnInfo(name = "original_language")
+    var originalLanguage: String = "",
+    @SerializedName("original_title")
+    @ColumnInfo(name = "original_title")
+    var originalTitle: String = "",
+    @SerializedName("video")
+    @ColumnInfo(name = "video")
+    var video: Boolean = false,
+    @SerializedName("title")
+    @ColumnInfo(name = "title")
+    var title: String = "",
+    @SerializedName("poster_path")
+    @ColumnInfo(name = "poster_path")
+    var posterPath: String = "",
+    @SerializedName("backdrop_path")
+    @ColumnInfo(name = "backdrop_path")
+    var backdropPath: String = "",
+    @SerializedName("release_date")
+    @ColumnInfo(name = "release_date")
+    var releaseDate: String = "",
+    @SerializedName("vote_average")
+    @ColumnInfo(name = "vote_average")
+    var voteAverage: Double = 0.0,
+    @SerializedName("popularity")
+    @ColumnInfo(name = "popularity")
+    var popularity: Double = 0.0,
+    @SerializedName("adult")
+    @ColumnInfo(name = "adult")
+    var adult: Boolean = false,
+    @SerializedName("vote_count")
+    @ColumnInfo(name = "vote_count")
+    var voteCount: Int = 0
+): Serializable
+

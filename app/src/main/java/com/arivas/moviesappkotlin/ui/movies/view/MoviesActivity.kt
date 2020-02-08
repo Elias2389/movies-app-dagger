@@ -1,48 +1,61 @@
 package com.arivas.moviesappkotlin.ui.movies.view
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.LinearLayout
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.RecyclerView
 import com.arivas.moviesappkotlin.R
 import com.arivas.moviesappkotlin.application.BaseApp
-import com.arivas.moviesappkotlin.common.dto.MoviesResponse
-import com.arivas.moviesappkotlin.common.network.RetrofitService
-import com.arivas.moviesappkotlin.common.network.services.MoviesServices
+import com.arivas.moviesappkotlin.common.dto.ResultsItem
+import com.arivas.moviesappkotlin.common.network.networkboundresource.Resource
 import com.arivas.moviesappkotlin.ui.movies.adapter.PopularMoviesRecyclerView
-import com.arivas.moviesappkotlin.ui.movies.presenter.MoviesPresenter
-import com.arivas.moviesappkotlin.ui.movies.presenter.MoviesPresenterImpl
+import com.arivas.moviesappkotlin.ui.movies.model.MoviesObservable
+import com.arivas.moviesappkotlin.ui.movies.viewmodel.MoviesViewModel
+import com.arivas.moviesappkotlin.ui.movies.viewmodel.MoviesViewModelFactory
 import io.supercharge.shimmerlayout.ShimmerLayout
-import retrofit2.Retrofit
 import javax.inject.Inject
 
 
-class MoviesActivity : AppCompatActivity(), MoviesView {
+class MoviesActivity : AppCompatActivity() {
 
     private var recyclerView: RecyclerView? = null
-    private var mAdapter: RecyclerView.Adapter<*>? = null
+    private var mAdapter: RecyclerView.Adapter<PopularMoviesRecyclerView.ViewHolder>? = null
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var shimmerLayout: ShimmerLayout? = null
     private var container: LinearLayout? = null
 
-    @Inject lateinit var moviesServices: MoviesServices
-    @Inject lateinit var presenter: MoviesPresenter
+    @Inject lateinit var moviesViewModel: MoviesViewModel
+    @Inject lateinit var moviesObservable: MoviesObservable
+    private lateinit var moviesList: List<ResultsItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        (application as BaseApp).getComponent().inject(this)
-
-        setViews()
+        setInjectComponent()
         setup()
+        getMovies()
     }
 
     private fun setup() {
-        setView()
-        popularMovies()
+        setViews()
+        moviesViewModel = getViewModelProvider()
+    }
+
+    private fun setInjectComponent() {
+        (application as BaseApp).getComponent().inject(this)
+    }
+
+    private fun getMovies() {
+        moviesViewModel
+            .getPopularMovies()
+            .observe(this, Observer {
+                it.data?.let { result -> successPopularMovies(result) }
+        })
+        showShimmer()
     }
 
     private fun setViews() {
@@ -51,23 +64,26 @@ class MoviesActivity : AppCompatActivity(), MoviesView {
         recyclerView = findViewById(R.id.recycler_view)
     }
 
-    override fun popularMovies() {
-        presenter.popularMovies()
-        showShimmer()
+    private fun getViewModelProvider(): MoviesViewModel {
+        return ViewModelProviders
+            .of(this, MoviesViewModelFactory(moviesObservable))
+            .get(MoviesViewModel::class.java)
     }
 
-    override fun successPopularMovies(movies: MoviesResponse) {
-        hideShimmer()
+    private fun successPopularMovies(movies: List<ResultsItem>) {
+       moviesList = movies
+       hideShimmer()
+       setupAdapter()
+    }
 
-        layoutManager = LinearLayoutManager(this)
+    private fun setupAdapter() {
+        layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
         recyclerView?.layoutManager = layoutManager
-
-        mAdapter = PopularMoviesRecyclerView(movies.results!!)
-        recyclerView?.adapter = mAdapter
+        recyclerView?.adapter = getAdapter()
     }
 
-    override fun error() {
-
+    private fun getAdapter(): PopularMoviesRecyclerView {
+        return PopularMoviesRecyclerView(moviesList, this)
     }
 
     private fun showShimmer() {
@@ -80,10 +96,7 @@ class MoviesActivity : AppCompatActivity(), MoviesView {
         recyclerView?.visibility = View.VISIBLE
         shimmerLayout?.visibility = View.GONE
         shimmerLayout?.stopShimmerAnimation()
-    }
 
-    override fun setView() {
-        presenter.getView(this)
     }
 
 }

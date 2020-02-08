@@ -6,35 +6,66 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = '0.8.2' //Use latest version
+}
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+}
+
 android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.arivas.moviesappkotlin"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     buildTypes {
         debug {
             buildConfigField "String", "BASE_URL", BASE_URL
             buildConfigField "String", "API_KEY", API_KEY
             buildConfigField "String", "BASE_URL_IMAGES", BASE_URL_IMAGES
+            testCoverageEnabled true
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            testCoverageEnabled false
         }
+    }
+
+    testOptions {
+        execution 'ANDROID_TEST_ORCHESTRATOR'
+        animationsDisabled true
+        unitTests.returnDefaultValues = true
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+    dataBinding {
+        enabled = true
     }
 }
 
 ext {
     retrofitVersion = "2.5.0"
+    logginInterceptorVersion = "3.11.0"
     gsonVersion = "2.8.5"
     supportVersion = "28.0.0"
     constrainLayoutVersion = "1.1.3"
-    frescoVersion = "1.13.0"
+    frescoVersion = "1.9.0"
     junitVersion = "4.12"
     runnerVersion = "1.0.2"
     expressoVersion = "3.0.2"
@@ -49,34 +80,40 @@ ext {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "com.android.support:appcompat-v7:$supportVersion"
-    implementation "com.android.support.constraint:constraint-layout:$constrainLayoutVersion"
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.google.code.gson:gson:$gsonVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$logginInterceptorVersion"
 
     //View
-    implementation "com.android.support:cardview-v7:$supportVersion"
-    implementation "com.android.support:recyclerview-v7:$supportVersion"
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     //Fresco
     implementation "com.facebook.fresco:fresco:$frescoVersion"
 
     //Test
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation "junit:junit:$junitVersion"
-    androidTestImplementation "com.android.support.test:runner:$runnerVersion"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$expressoVersion"
+    testImplementation 'org.mockito:mockito-inline:2.13.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    testImplementation 'org.mockito:mockito-core:2.23.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 
     // Room components
-    implementation "android.arch.persistence.room:runtime:$roomVersion"
-    annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"
-    androidTestImplementation "android.arch.persistence.room:testing:$roomVersion"
+    implementation 'androidx.room:room-runtime:2.2.3'
+    annotationProcessor 'androidx.room:room-compiler:2.2.3'
+    androidTestImplementation 'androidx.room:room-testing:2.2.3'
+    implementation "android.arch.persistence.room:runtime:1.1.1"
+    kapt "android.arch.persistence.room:compiler:1.1.1"
 
     // Lifecycle components
-    implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
-    annotationProcessor "android.arch.lifecycle:compiler:$archLifecycleVersion"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.1.0'
 
     //RX java
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
@@ -90,8 +127,14 @@ dependencies {
     implementation 'com.google.dagger:dagger:2.13'
     kapt 'com.google.dagger:dagger-compiler:2.13'
 
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0-M2"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0-M2"
+
 }
 repositories {
+    google()
     mavenCentral()
     jcenter()
 }
+
+

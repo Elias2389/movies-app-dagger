@@ -77,7 +77,7 @@ class MoviesActivity : AppCompatActivity() {
     }
 
     private fun setupAdapter() {
-        layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        layoutManager = androidx.recyclerview.widget.GridLayoutManager(this, 3)
         recyclerView?.layoutManager = layoutManager
         recyclerView?.adapter = getAdapter()
     }

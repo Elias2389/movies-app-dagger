@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.TextView
 import com.arivas.moviesappkotlin.BuildConfig
 import com.arivas.moviesappkotlin.R
@@ -20,8 +22,12 @@ import com.facebook.drawee.view.SimpleDraweeView
 
 class PopularMoviesRecyclerView(private val results: List<ResultsItem>,
                                 private val context: Context):
-    RecyclerView.Adapter<PopularMoviesRecyclerView.ViewHolder>() {
-    var moviesList: List<ResultsItem> = results
+    RecyclerView.Adapter<PopularMoviesRecyclerView.ViewHolder>(), Filterable {
+    var moviesList: ArrayList<ResultsItem> = ArrayList()
+
+    init {
+        moviesList.addAll(results)
+    }
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         val view = LayoutInflater.from(p0.context).inflate(
@@ -32,11 +38,7 @@ class PopularMoviesRecyclerView(private val results: List<ResultsItem>,
     }
 
     override fun getItemCount(): Int {
-        if (moviesList != null) {
-            return moviesList.size
-        } else {
-            return 0
-        }
+        return moviesList.size
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -63,6 +65,12 @@ class PopularMoviesRecyclerView(private val results: List<ResultsItem>,
             intent.putExtra("resultsItem", resultsItem)
              context.startActivity(intent, option.toBundle())
         }
+    }
+
+    override fun getFilter(): Filter {
+        moviesList.clear()
+        moviesList.addAll(results)
+        return CustomFilter(this, moviesList)
     }
 
 }

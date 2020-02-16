@@ -1,9 +1,14 @@
 package com.arivas.moviesappkotlin.ui.movies.view
 
+import android.app.SearchManager
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
@@ -28,6 +33,8 @@ class MoviesActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var appBarLayout: AppBarLayout
     private lateinit var container: LinearLayout
+    private lateinit var searchView: SearchView
+    private lateinit var adapter: PopularMoviesRecyclerView
 
     @Inject lateinit var moviesViewModel: MoviesViewModel
     @Inject lateinit var moviesObservable: MoviesObservable
@@ -44,7 +51,8 @@ class MoviesActivity : AppCompatActivity() {
 
     private fun setup() {
         setViews()
-        setupConstrain()
+        setupSearchView()
+        handlerCollapsing()
         moviesViewModel = getViewModelProvider()
     }
 
@@ -64,6 +72,7 @@ class MoviesActivity : AppCompatActivity() {
     private fun setViews() {
         collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar_movies)
         recyclerView = findViewById(R.id.recycler_view)
+        searchView = findViewById(R.id.search_movies)
         container = findViewById(R.id.container_info)
         shimmerLayout = findViewById(R.id.shimmer)
         appBarLayout = findViewById(R.id.app_bar)
@@ -84,11 +93,8 @@ class MoviesActivity : AppCompatActivity() {
     private fun setupAdapter() {
         layoutManager = androidx.recyclerview.widget.GridLayoutManager(this, 3)
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = getAdapter()
-    }
-
-    private fun getAdapter(): PopularMoviesRecyclerView {
-        return PopularMoviesRecyclerView(moviesList, this)
+        adapter = PopularMoviesRecyclerView(moviesList, this)
+        recyclerView.adapter = adapter
     }
 
     private fun showShimmer() {
@@ -104,7 +110,7 @@ class MoviesActivity : AppCompatActivity() {
 
     }
 
-    private fun setupConstrain() {
+    private fun handlerCollapsing() {
         var isShow = false
         var scrollRange: Int = -1
 
@@ -114,11 +120,27 @@ class MoviesActivity : AppCompatActivity() {
                 scrollRange = barLayout?.totalScrollRange!!
             }
             if (scrollRange + verticalOffset == 0){
-                collapsingToolbarLayout.title = resources.getString(R.string.message)
+                collapsingToolbarLayout.title = resources.getString(R.string.title_movies)
                 isShow = true
             } else if (isShow){
                 collapsingToolbarLayout.title = " "
                 isShow = false
+            }
+        })
+    }
+
+    private fun setupSearchView() {
+//        val searchManager: SearchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                adapter.filter.filter(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter.filter(newText)
+                return false
             }
         })
     }

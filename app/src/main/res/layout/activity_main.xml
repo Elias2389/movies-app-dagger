@@ -5,12 +5,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".ui.ScrollingActivity">
+        tools:context=".ui.movies.view.MoviesActivity">
 
     <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/app_bar_height"
+            android:layout_height="250dp"
             android:fitsSystemWindows="true"
             android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -23,16 +23,29 @@
                 app:contentScrim="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:toolbarId="@+id/toolbar">
-            <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
+            <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="2"
-                    android:text="@string/message"
-                    android:padding="40dp"
-                    android:textSize="32sp"
-                    />
+                    android:orientation="vertical"
+                    >
+                <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lines="2"
+                        android:text="@string/message"
+                        android:padding="40dp"
+                        android:textSize="28sp"
+                        />
+
+                <androidx.appcompat.widget.SearchView
+                        android:id="@+id/search_movies"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        />
+            </LinearLayout>
 
             <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"

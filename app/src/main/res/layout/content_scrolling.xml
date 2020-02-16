@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".ui.movies.view.MoviesActivity"
+        tools:showIn="@layout/activity_main">
+
+        <LinearLayout
+                android:id="@+id/container_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            <io.supercharge.shimmerlayout.ShimmerLayout
+                    android:id="@+id/shimmer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:visibility="gone">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                    <include layout="@layout/card_item_placeholder" />
+
+                    <include layout="@layout/card_item_placeholder" />
+
+                    <include layout="@layout/card_item_placeholder" />
+
+                    <include layout="@layout/card_item_placeholder" />
+                </LinearLayout>
+
+            </io.supercharge.shimmerlayout.ShimmerLayout>
+        </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -130,8 +130,6 @@ class MoviesActivity : AppCompatActivity() {
     }
 
     private fun setupSearchView() {
-//        val searchManager: SearchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-//        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 adapter.filter.filter(query)

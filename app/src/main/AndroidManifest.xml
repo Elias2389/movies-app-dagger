@@ -16,7 +16,11 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.moviesdetail.view.MoviesDetailActivity"></activity>
+        <activity
+                android:name=".ui.ScrollingActivity"
+                android:label="@string/title_activity_scrolling"
+                android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".ui.moviesdetail.view.MoviesDetailActivity" />
         <activity android:name=".ui.movies.view.MoviesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -33,7 +33,13 @@ class CustomFilter(private val popularMoviesRecyclerView: PopularMoviesRecyclerV
 
     override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
         popularMoviesRecyclerView.moviesList.clear()
-        popularMoviesRecyclerView.moviesList.addAll(results?.values as ArrayList<ResultsItem>)
-        popularMoviesRecyclerView.notifyDataSetChanged()
+        if (results != null) {
+            try {
+                popularMoviesRecyclerView.moviesList.addAll(results.values as ArrayList<ResultsItem>)
+                popularMoviesRecyclerView.notifyDataSetChanged()
+            } catch (error: TypeCastException) {
+                error.stackTrace
+            }
+        }
     }
 }

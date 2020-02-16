@@ -5,7 +5,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".ui.movies.view.MoviesActivity">
+        tools:context=".ui.movies.view.MoviesActivity"
+        android:background="@color/colorPrimary"
+        >
 
     <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
@@ -35,8 +37,10 @@
                         android:gravity="center"
                         android:lines="2"
                         android:text="@string/message"
-                        android:padding="40dp"
+                        android:padding="30dp"
                         android:textSize="28sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
                         />
 
                 <androidx.appcompat.widget.SearchView
@@ -44,6 +48,7 @@
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:background="@drawable/border_search_view"
                         />
             </LinearLayout>
 

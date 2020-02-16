@@ -38,6 +38,8 @@
             android:textSize="@dimen/title_size"
             app:layout_constraintTop_toBottomOf="@+id/cardView2"
             tools:text="Title"
+            android:textColor="@color/white"
+            android:layout_margin="@dimen/margin_item"
             />
 
 

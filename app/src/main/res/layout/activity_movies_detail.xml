@@ -5,6 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/background_movies_list"
         tools:context=".ui.moviesdetail.view.MoviesDetailActivity">
 
     <androidx.cardview.widget.CardView
@@ -18,23 +19,44 @@
         <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/image_detail"
                 android:layout_width="match_parent"
-                android:layout_height="280dp"
+                android:layout_height="400dp"
                 android:layout_gravity="center"
                />
 
     </androidx.cardview.widget.CardView>
 
     <TextView
-            android:id="@+id/description"
+            android:id="@+id/title_movie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="TextView"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="40dp"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView"
-            app:layout_constraintVertical_bias="0.114"
-            android:padding="24dp"
-            />
+            tools:text="Prueba" />
+
+    <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toBottomOf="@+id/title_movie"
+            app:layout_constraintVertical_bias="0.169"
+            tools:text="Prueba" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

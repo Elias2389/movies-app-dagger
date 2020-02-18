@@ -8,11 +8,6 @@ interface MoviesRepository {
     /**
      * Get popular movies
      */
-    fun popularMovies()
-
-    /**
-     * Get popular movies
-     */
     fun getPopularMovies(): LiveData<Resource<List<ResultsItem>>>
 
     /**

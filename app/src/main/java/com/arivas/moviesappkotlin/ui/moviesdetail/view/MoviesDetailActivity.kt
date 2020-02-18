@@ -10,9 +10,12 @@ import com.facebook.drawee.view.SimpleDraweeView
 
 class MoviesDetailActivity : AppCompatActivity() {
 
-    private var description: TextView? = null
-    private var imageDetail: SimpleDraweeView? = null
-    lateinit var data: ResultsItem
+    private lateinit var imageDetail: SimpleDraweeView
+    private lateinit var description: TextView
+    private lateinit var titleMovie: TextView
+    private lateinit var data: ResultsItem
+
+    private val RESULTS_ITEM: String = "resultsItem"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,17 +23,22 @@ class MoviesDetailActivity : AppCompatActivity() {
 
         setup()
         setViews()
+        setData()
     }
 
     private fun setViews() {
+        titleMovie = findViewById(R.id.title_movie)
         description = findViewById(R.id.description)
         imageDetail = findViewById(R.id.image_detail)
+    }
 
-        imageDetail?.setImageURI(BuildConfig.BASE_URL_IMAGES + data.posterPath)
-        description?.text = data.overview
+    private fun setData() {
+        imageDetail.setImageURI(BuildConfig.BASE_URL_IMAGES + data.posterPath)
+        titleMovie.text = data.title
+        description.text = data.overview
     }
 
     private fun setup() {
-        data = intent.getSerializableExtra("resultsItem") as ResultsItem
+        data = intent.getSerializableExtra(RESULTS_ITEM) as ResultsItem
     }
 }

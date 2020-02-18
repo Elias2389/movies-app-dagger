@@ -1,11 +1,7 @@
 package com.arivas.moviesappkotlin.ui.movies.view
 
-import android.app.SearchManager
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.widget.SearchView
@@ -16,7 +12,7 @@ import com.arivas.moviesappkotlin.R
 import com.arivas.moviesappkotlin.application.BaseApp
 import com.arivas.moviesappkotlin.common.dto.ResultsItem
 import com.arivas.moviesappkotlin.ui.movies.adapter.PopularMoviesRecyclerView
-import com.arivas.moviesappkotlin.ui.movies.model.MoviesObservable
+import com.arivas.moviesappkotlin.ui.movies.repository.MoviesRepository
 import com.arivas.moviesappkotlin.ui.movies.viewmodel.MoviesViewModel
 import com.arivas.moviesappkotlin.ui.movies.viewmodel.MoviesViewModelFactory
 import com.google.android.material.appbar.AppBarLayout
@@ -37,7 +33,7 @@ class MoviesActivity : AppCompatActivity() {
     private lateinit var adapter: PopularMoviesRecyclerView
 
     @Inject lateinit var moviesViewModel: MoviesViewModel
-    @Inject lateinit var moviesObservable: MoviesObservable
+    @Inject lateinit var moviesRepository: MoviesRepository
     private lateinit var moviesList: List<ResultsItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,7 +76,7 @@ class MoviesActivity : AppCompatActivity() {
 
     private fun getViewModelProvider(): MoviesViewModel {
         return ViewModelProviders
-            .of(this, MoviesViewModelFactory(moviesObservable))
+            .of(this, MoviesViewModelFactory(moviesRepository))
             .get(MoviesViewModel::class.java)
     }
 

@@ -15,7 +15,6 @@ import org.mockito.MockitoAnnotations
 
 @RunWith(JUnit4::class)
 class MoviesViewModelTest {
-
     @Mock
     lateinit var moviesRepository: MoviesRepository
 

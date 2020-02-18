@@ -8,6 +8,7 @@ import com.arivas.moviesappkotlin.common.network.networkboundresource.NetworkBou
 import com.arivas.moviesappkotlin.common.network.networkboundresource.Resource
 import com.arivas.moviesappkotlin.common.network.services.MoviesServices
 import io.reactivex.Observable
+import java.lang.RuntimeException
 
 class MoviesRepositoryImpl(private val moviesServices: MoviesServices,
                            private val moviesDao: MoviesDao): MoviesRepository {
@@ -30,7 +31,11 @@ class MoviesRepositoryImpl(private val moviesServices: MoviesServices,
             }
 
             override fun saveCallResult(item: MoviesResponse) {
-                moviesDao.insertMoviesToDatabase(item.results)
+                try {
+                    moviesDao.insertMoviesToDatabase(item.results)
+                } catch (e: RuntimeException) {
+                    e.stackTrace
+                }
             }
 
 

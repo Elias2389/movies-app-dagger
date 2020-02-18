@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.arivas.moviesappkotlin.common.DATABASE_NAME
 import com.arivas.moviesappkotlin.common.dto.ResultsItem
 
-@Database(entities = [ResultsItem::class], version = 1, exportSchema = false)
+@Database(entities = [ResultsItem::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun moviesDao(): MoviesDao
 
@@ -24,6 +24,7 @@ abstract class AppDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context): AppDatabase {
             return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
+                .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
                 .build()
         }

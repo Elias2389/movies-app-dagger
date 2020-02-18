@@ -32,7 +32,7 @@ data class ResultsItem(
     var posterPath: String = "",
     @SerializedName("backdrop_path")
     @ColumnInfo(name = "backdrop_path")
-    var backdropPath: String = "",
+    var backdropPath: String? = null ,
     @SerializedName("release_date")
     @ColumnInfo(name = "release_date")
     var releaseDate: String = "",

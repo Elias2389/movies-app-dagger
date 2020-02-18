@@ -22,7 +22,6 @@ import javax.inject.Inject
 
 
 class MoviesActivity : AppCompatActivity() {
-
     private lateinit var collapsingToolbarLayout: CollapsingToolbarLayout
     private lateinit var layoutManager: RecyclerView.LayoutManager
     private lateinit var shimmerLayout: ShimmerLayout

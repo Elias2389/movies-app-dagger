@@ -13,13 +13,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import com.arivas.moviesappkotlin.BuildConfig
 import com.arivas.moviesappkotlin.R
 import com.arivas.moviesappkotlin.common.dto.ResultsItem
 import com.arivas.moviesappkotlin.ui.moviesdetail.view.MoviesDetailActivity
-import com.facebook.drawee.view.SimpleDraweeView
+import com.bumptech.glide.Glide
+
 
 class PopularMoviesRecyclerView(private val results: List<ResultsItem>,
                                 private val context: Context):
@@ -45,12 +47,16 @@ class PopularMoviesRecyclerView(private val results: List<ResultsItem>,
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
         viewHolder.title.text = moviesList.get(i).title
-        viewHolder.img.setImageURI(BuildConfig.BASE_URL_IMAGES + moviesList.get(i).posterPath)
+        Glide.with(context)
+            .load(BuildConfig.BASE_URL_IMAGES + moviesList.get(i).posterPath)
+            .centerInside()
+            .into(viewHolder.img)
+
         goToDetail(viewHolder, moviesList.get(i))
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val img: SimpleDraweeView = itemView.findViewById(R.id.image)
+        val img: ImageView = itemView.findViewById(R.id.image)
         val title: TextView = itemView.findViewById(R.id.title)
     }
 

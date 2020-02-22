@@ -14,13 +14,15 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            >
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <ImageView
                 android:id="@+id/image_detail"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 android:layout_gravity="center"
+                android:background="@color/colorPrimary"
                />
 
     </androidx.cardview.widget.CardView>

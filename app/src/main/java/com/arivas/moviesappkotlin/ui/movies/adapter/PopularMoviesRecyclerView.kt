@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
 import com.arivas.moviesappkotlin.BuildConfig
 import com.arivas.moviesappkotlin.R
 import com.arivas.moviesappkotlin.common.dto.ResultsItem
@@ -53,7 +54,6 @@ class PopularMoviesRecyclerView(private val results: List<ResultsItem>,
         val title: TextView = itemView.findViewById(R.id.title)
     }
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     private fun goToDetail(viewHolder: ViewHolder, resultsItem: ResultsItem) {
         viewHolder.itemView.setOnClickListener {
             val intent = Intent(context, MoviesDetailActivity::class.java)
@@ -63,7 +63,8 @@ class PopularMoviesRecyclerView(private val results: List<ResultsItem>,
                     Pair<View, String>(viewHolder.img,"shared_photo"))
 
             intent.putExtra("resultsItem", resultsItem)
-             context.startActivity(intent, option.toBundle())
+            ActivityCompat.startActivity(context, intent, option.toBundle())
+            //context.startActivity(intent, option.toBundle())
         }
     }
 

@@ -1,12 +1,18 @@
 package com.arivas.moviesappkotlin.ui.moviesdetail.view
 
+import android.app.ActivityOptions
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.core.view.ViewCompat
 import com.arivas.moviesappkotlin.BuildConfig
 import com.arivas.moviesappkotlin.R
 import com.arivas.moviesappkotlin.common.dto.ResultsItem
 import com.facebook.drawee.view.SimpleDraweeView
+import android.util.Pair as UtilPair
+
 
 class MoviesDetailActivity : AppCompatActivity() {
 
@@ -15,7 +21,7 @@ class MoviesDetailActivity : AppCompatActivity() {
     private lateinit var titleMovie: TextView
     private lateinit var data: ResultsItem
 
-    private val RESULTS_ITEM: String = "resultsItem"
+    private val RESULTS_ITEMS: String = "resultsItem"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,12 +39,15 @@ class MoviesDetailActivity : AppCompatActivity() {
     }
 
     private fun setData() {
+        ViewCompat.setTransitionName(imageDetail, "shared_photo")
+
+
         imageDetail.setImageURI(BuildConfig.BASE_URL_IMAGES + data.posterPath)
         titleMovie.text = data.title
         description.text = data.overview
     }
 
     private fun setup() {
-        data = intent.getSerializableExtra(RESULTS_ITEM) as ResultsItem
+        data = intent.getSerializableExtra(RESULTS_ITEMS) as ResultsItem
     }
 }

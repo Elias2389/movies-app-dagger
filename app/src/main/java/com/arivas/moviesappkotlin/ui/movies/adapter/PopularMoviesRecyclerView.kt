@@ -64,7 +64,6 @@ class PopularMoviesRecyclerView(private val results: List<ResultsItem>,
 
             intent.putExtra("resultsItem", resultsItem)
             ActivityCompat.startActivity(context, intent, option.toBundle())
-            //context.startActivity(intent, option.toBundle())
         }
     }
 

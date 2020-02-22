@@ -1,5 +1,6 @@
 package com.arivas.moviesappkotlin.ui.movies.view
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -137,5 +138,4 @@ class MoviesActivity : AppCompatActivity() {
             }
         })
     }
-
 }

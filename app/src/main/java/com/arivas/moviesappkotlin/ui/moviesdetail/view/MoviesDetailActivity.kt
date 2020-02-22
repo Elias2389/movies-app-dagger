@@ -40,8 +40,6 @@ class MoviesDetailActivity : AppCompatActivity() {
 
     private fun setData() {
         ViewCompat.setTransitionName(imageDetail, "shared_photo")
-
-
         imageDetail.setImageURI(BuildConfig.BASE_URL_IMAGES + data.posterPath)
         titleMovie.text = data.title
         description.text = data.overview

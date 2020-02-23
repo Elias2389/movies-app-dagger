@@ -1,14 +1,15 @@
 package com.arivas.moviesappkotlin.ui.movies.view
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.arivas.moviesappkotlin.R
 import com.arivas.moviesappkotlin.application.BaseApp
 import com.arivas.moviesappkotlin.common.dto.ResultsItem
@@ -18,17 +19,16 @@ import com.arivas.moviesappkotlin.ui.movies.viewmodel.MoviesViewModel
 import com.arivas.moviesappkotlin.ui.movies.viewmodel.MoviesViewModelFactory
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
-import io.supercharge.shimmerlayout.ShimmerLayout
 import javax.inject.Inject
 
 
 class MoviesActivity : AppCompatActivity() {
     private lateinit var collapsingToolbarLayout: CollapsingToolbarLayout
     private lateinit var layoutManager: RecyclerView.LayoutManager
-    private lateinit var shimmerLayout: ShimmerLayout
     private lateinit var recyclerView: RecyclerView
     private lateinit var appBarLayout: AppBarLayout
     private lateinit var container: LinearLayout
+    private lateinit var lottieAnimation: LottieAnimationView
     private lateinit var searchView: SearchView
     private lateinit var adapter: PopularMoviesRecyclerView
 
@@ -62,15 +62,15 @@ class MoviesActivity : AppCompatActivity() {
             .observe(this, Observer {
                 it.data?.let { result -> successPopularMovies(result) }
         })
-        showShimmer()
+        showLoading()
     }
 
     private fun setViews() {
         collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar_movies)
+        lottieAnimation = findViewById(R.id.animation_view)
         recyclerView = findViewById(R.id.recycler_view)
-        searchView = findViewById(R.id.search_movies)
         container = findViewById(R.id.container_info)
-        shimmerLayout = findViewById(R.id.shimmer)
+        searchView = findViewById(R.id.search_movies)
         appBarLayout = findViewById(R.id.app_bar)
     }
 
@@ -82,7 +82,7 @@ class MoviesActivity : AppCompatActivity() {
 
     private fun successPopularMovies(movies: List<ResultsItem>) {
        moviesList = movies
-       hideShimmer()
+       hideLoading()
        setupAdapter()
     }
 
@@ -93,17 +93,22 @@ class MoviesActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
-    private fun showShimmer() {
-        shimmerLayout.startShimmerAnimation()
-        shimmerLayout.visibility = View.VISIBLE
+    private fun showLoading() {
         recyclerView.visibility = View.GONE
+        lottieAnimation.apply {
+            visibility = View.VISIBLE
+            playAnimation()
+        }
     }
 
-    private fun hideShimmer() {
-        recyclerView.visibility = View.VISIBLE
-        shimmerLayout.visibility = View.GONE
-        shimmerLayout.stopShimmerAnimation()
-
+    private fun hideLoading() {
+        Handler().postDelayed({
+            recyclerView.visibility = View.VISIBLE
+            lottieAnimation.apply {
+                visibility = View.GONE
+                cancelAnimation()
+            }
+        }, 3000)
     }
 
     private fun handlerCollapsing() {

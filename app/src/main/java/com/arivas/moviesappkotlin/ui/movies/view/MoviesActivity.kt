@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -27,7 +28,7 @@ class MoviesActivity : AppCompatActivity() {
     private lateinit var layoutManager: RecyclerView.LayoutManager
     private lateinit var recyclerView: RecyclerView
     private lateinit var appBarLayout: AppBarLayout
-    private lateinit var container: LinearLayout
+    private lateinit var container: RelativeLayout
     private lateinit var lottieAnimation: LottieAnimationView
     private lateinit var searchView: SearchView
     private lateinit var adapter: PopularMoviesRecyclerView

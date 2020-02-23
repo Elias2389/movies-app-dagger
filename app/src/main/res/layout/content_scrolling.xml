@@ -10,10 +10,10 @@
         tools:showIn="@layout/activity_main"
         >
 
-        <LinearLayout
+        <RelativeLayout
                 android:id="@+id/container_info"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:background="@drawable/border_top_movies_list"
                 >
@@ -24,7 +24,7 @@
                     android:layout_height="match_parent"
                     />
 
-            <include layout="@layout/card_item_placeholder"/>
-        </LinearLayout>
+            <include layout="@layout/card_item_placeholder" />
+        </RelativeLayout>
 
 </androidx.core.widget.NestedScrollView>

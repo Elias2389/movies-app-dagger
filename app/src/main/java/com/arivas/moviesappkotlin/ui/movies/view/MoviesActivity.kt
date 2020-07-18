@@ -30,8 +30,6 @@ class MoviesActivity : AppCompatActivity() {
     private lateinit var layoutManager: RecyclerView.LayoutManager
     private lateinit var adapter: PopularMoviesRecyclerView
     private lateinit var mainBinding: ActivityMainBinding
-    private lateinit var contentScrollingBinding: ContentScrollingBinding
-    private lateinit var cardItemPlaceholderBinding: CardItemPlaceholderBinding
 
     @Inject lateinit var moviesViewModel: MoviesViewModel
     @Inject lateinit var moviesRepository: MoviesRepository
@@ -41,9 +39,6 @@ class MoviesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
-        contentScrollingBinding = ContentScrollingBinding.inflate(layoutInflater)
-        cardItemPlaceholderBinding = CardItemPlaceholderBinding.inflate(layoutInflater)
-
         setContentView(mainBinding.root)
 
         setInjectComponent()
@@ -84,14 +79,14 @@ class MoviesActivity : AppCompatActivity() {
 
     private fun setupAdapter() {
         layoutManager = androidx.recyclerview.widget.GridLayoutManager(this, 3)
-        contentScrollingBinding.recyclerView.layoutManager = layoutManager
+        mainBinding.contentView.recyclerView.layoutManager = layoutManager
         adapter = PopularMoviesRecyclerView(moviesList, this)
-        contentScrollingBinding.recyclerView.adapter = adapter
+        mainBinding.contentView.recyclerView.adapter = adapter
     }
 
     private fun showLoading() {
-        contentScrollingBinding.recyclerView.visibility = View.GONE
-        cardItemPlaceholderBinding.animationView.apply {
+        mainBinding.contentView.recyclerView.visibility = View.GONE
+        mainBinding.contentView.cardItem.animationView.apply {
             visibility = View.VISIBLE
             playAnimation()
         }
@@ -99,8 +94,8 @@ class MoviesActivity : AppCompatActivity() {
 
     private fun hideLoading() {
         Handler().postDelayed({
-            contentScrollingBinding.recyclerView.visibility = View.VISIBLE
-            cardItemPlaceholderBinding.animationView.apply {
+            mainBinding.contentView.recyclerView.visibility = View.VISIBLE
+            mainBinding.contentView.cardItem.animationView.apply {
                 visibility = View.GONE
                 cancelAnimation()
             }

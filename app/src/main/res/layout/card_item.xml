@@ -6,7 +6,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_item"
         android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp">
+        android:layout_marginStart="16dp"
+        android:id="@+id/item_view_movie">
 
     <androidx.cardview.widget.CardView
             android:id="@+id/cardView2"

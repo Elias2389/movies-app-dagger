@@ -24,7 +24,7 @@
                     android:layout_height="match_parent"
                     />
 
-            <include layout="@layout/card_item_placeholder" />
+            <include layout="@layout/card_item_placeholder" android:id="@+id/card_item" />
         </RelativeLayout>
 
 </androidx.core.widget.NestedScrollView>

@@ -133,5 +133,9 @@ class MoviesActivity : AppCompatActivity() {
                 return false
             }
         })
+
+        mainBinding.searchMovies.setOnClickListener {
+            mainBinding.searchMovies.setIconified(false)
+        }
     }
 }

@@ -8,10 +8,12 @@ import com.arivas.moviesappkotlin.common.network.networkboundresource.NetworkBou
 import com.arivas.moviesappkotlin.common.network.networkboundresource.Resource
 import com.arivas.moviesappkotlin.common.network.services.MoviesServices
 import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
 import java.lang.RuntimeException
 
 class MoviesRepositoryImpl(private val moviesServices: MoviesServices,
                            private val moviesDao: MoviesDao): MoviesRepository {
+    private var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun handlerError(error: Throwable) {
     }

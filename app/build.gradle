@@ -45,6 +45,10 @@ android {
         }
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     testOptions {
         execution 'ANDROID_TEST_ORCHESTRATOR'
         animationsDisabled true
@@ -52,10 +56,6 @@ android {
         unitTests {
             includeAndroidResources = true
         }
-    }
-
-    dataBinding {
-        enabled = true
     }
 }
 

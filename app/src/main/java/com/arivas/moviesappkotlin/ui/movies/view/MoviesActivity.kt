@@ -14,6 +14,9 @@ import com.airbnb.lottie.LottieAnimationView
 import com.arivas.moviesappkotlin.R
 import com.arivas.moviesappkotlin.application.BaseApp
 import com.arivas.moviesappkotlin.common.dto.ResultsItem
+import com.arivas.moviesappkotlin.databinding.ActivityMainBinding
+import com.arivas.moviesappkotlin.databinding.CardItemPlaceholderBinding
+import com.arivas.moviesappkotlin.databinding.ContentScrollingBinding
 import com.arivas.moviesappkotlin.ui.movies.adapter.PopularMoviesRecyclerView
 import com.arivas.moviesappkotlin.ui.movies.repository.MoviesRepository
 import com.arivas.moviesappkotlin.ui.movies.viewmodel.MoviesViewModel
@@ -24,14 +27,9 @@ import javax.inject.Inject
 
 
 class MoviesActivity : AppCompatActivity() {
-    private lateinit var collapsingToolbarLayout: CollapsingToolbarLayout
     private lateinit var layoutManager: RecyclerView.LayoutManager
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var appBarLayout: AppBarLayout
-    private lateinit var container: RelativeLayout
-    private lateinit var lottieAnimation: LottieAnimationView
-    private lateinit var searchView: SearchView
     private lateinit var adapter: PopularMoviesRecyclerView
+    private lateinit var mainBinding: ActivityMainBinding
 
     @Inject lateinit var moviesViewModel: MoviesViewModel
     @Inject lateinit var moviesRepository: MoviesRepository
@@ -39,7 +37,9 @@ class MoviesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        mainBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(mainBinding.root)
 
         setInjectComponent()
         setup()
@@ -47,7 +47,6 @@ class MoviesActivity : AppCompatActivity() {
     }
 
     private fun setup() {
-        setViews()
         setupSearchView()
         handlerCollapsing()
         moviesViewModel = getViewModelProvider()
@@ -66,15 +65,6 @@ class MoviesActivity : AppCompatActivity() {
         showLoading()
     }
 
-    private fun setViews() {
-        collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar_movies)
-        lottieAnimation = findViewById(R.id.animation_view)
-        recyclerView = findViewById(R.id.recycler_view)
-        container = findViewById(R.id.container_info)
-        searchView = findViewById(R.id.search_movies)
-        appBarLayout = findViewById(R.id.app_bar)
-    }
-
     private fun getViewModelProvider(): MoviesViewModel {
         return ViewModelProviders
             .of(this, MoviesViewModelFactory(moviesRepository))
@@ -89,14 +79,14 @@ class MoviesActivity : AppCompatActivity() {
 
     private fun setupAdapter() {
         layoutManager = androidx.recyclerview.widget.GridLayoutManager(this, 3)
-        recyclerView.layoutManager = layoutManager
+        mainBinding.contentView.recyclerView.layoutManager = layoutManager
         adapter = PopularMoviesRecyclerView(moviesList, this)
-        recyclerView.adapter = adapter
+        mainBinding.contentView.recyclerView.adapter = adapter
     }
 
     private fun showLoading() {
-        recyclerView.visibility = View.GONE
-        lottieAnimation.apply {
+        mainBinding.contentView.recyclerView.visibility = View.GONE
+        mainBinding.contentView.cardItem.animationView.apply {
             visibility = View.VISIBLE
             playAnimation()
         }
@@ -104,8 +94,8 @@ class MoviesActivity : AppCompatActivity() {
 
     private fun hideLoading() {
         Handler().postDelayed({
-            recyclerView.visibility = View.VISIBLE
-            lottieAnimation.apply {
+            mainBinding.contentView.recyclerView.visibility = View.VISIBLE
+            mainBinding.contentView.cardItem.animationView.apply {
                 visibility = View.GONE
                 cancelAnimation()
             }
@@ -116,23 +106,23 @@ class MoviesActivity : AppCompatActivity() {
         var isShow = false
         var scrollRange: Int = -1
 
-        appBarLayout.addOnOffsetChangedListener(
+        mainBinding.appBar.addOnOffsetChangedListener(
             AppBarLayout.OnOffsetChangedListener { barLayout, verticalOffset ->
             if (scrollRange == -1){
                 scrollRange = barLayout?.totalScrollRange!!
             }
             if (scrollRange + verticalOffset == 0){
-                collapsingToolbarLayout.title = resources.getString(R.string.title_movies)
+                mainBinding.collapsingToolbarMovies.title = resources.getString(R.string.title_movies)
                 isShow = true
             } else if (isShow){
-                collapsingToolbarLayout.title = " "
+                mainBinding.collapsingToolbarMovies.title = " "
                 isShow = false
             }
         })
     }
 
     private fun setupSearchView() {
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+        mainBinding.searchMovies.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 adapter.filter.filter(query)
                 return false

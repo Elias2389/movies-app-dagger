@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat
 import com.arivas.moviesappkotlin.BuildConfig
 import com.arivas.moviesappkotlin.R
 import com.arivas.moviesappkotlin.common.dto.ResultsItem
+import com.arivas.moviesappkotlin.databinding.CardItemBinding
 import com.arivas.moviesappkotlin.ui.moviesdetail.view.MoviesDetailActivity
 import com.bumptech.glide.Glide
 
@@ -37,6 +38,7 @@ class PopularMoviesRecyclerView(private val results: List<ResultsItem>,
             R.layout.card_item,
             p0, false
         )
+
         return ViewHolder(view)
     }
 
@@ -46,31 +48,36 @@ class PopularMoviesRecyclerView(private val results: List<ResultsItem>,
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-        viewHolder.title.text = moviesList.get(i).title
-        Glide.with(context)
-            .load(BuildConfig.BASE_URL_IMAGES + moviesList.get(i).posterPath)
-            .centerInside()
-            .into(viewHolder.img)
-
-        goToDetail(viewHolder, moviesList.get(i))
+        viewHolder.bind(moviesList.get(i), context)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val img: ImageView = itemView.findViewById(R.id.image)
-        val title: TextView = itemView.findViewById(R.id.title)
-    }
+        private val binding = CardItemBinding.bind(itemView)
 
-    private fun goToDetail(viewHolder: ViewHolder, resultsItem: ResultsItem) {
-        viewHolder.itemView.setOnClickListener {
-            val intent = Intent(context, MoviesDetailActivity::class.java)
-            val option: ActivityOptionsCompat = ActivityOptionsCompat
-                .makeSceneTransitionAnimation(
-                    context as Activity,
-                    Pair<View, String>(viewHolder.img,"shared_photo"))
+        fun bind(resultsItem: ResultsItem, context: Context) {
+            binding.apply {
+                title.text = resultsItem.title
+                Glide.with(context)
+                    .load(BuildConfig.BASE_URL_IMAGES + resultsItem.posterPath)
+                    .centerInside()
+                    .into(image)
+                goToDetail(context, resultsItem)
+            }
 
-            intent.putExtra("resultsItem", resultsItem)
-            ActivityCompat.startActivity(context, intent, option.toBundle())
         }
+        private fun goToDetail(context: Context, resultsItem: ResultsItem) {
+            binding.itemViewMovie.setOnClickListener {
+                val intent = Intent(context, MoviesDetailActivity::class.java)
+                val option: ActivityOptionsCompat = ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(
+                        context as Activity,
+                        Pair<View, String>(binding.image,"shared_photo"))
+
+                intent.putExtra("resultsItem", resultsItem)
+                ActivityCompat.startActivity(context, intent, option.toBundle())
+            }
+        }
+
     }
 
     override fun getFilter(): Filter {

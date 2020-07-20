@@ -24,6 +24,7 @@ class MoviesRepositoryImpl(private val moviesServices: MoviesServices,
 
     override fun getPopularMovies(): LiveData<Resource<List<ResultsItem>>> {
         return object : NetworkBoundResource<List<ResultsItem>, MoviesResponse>() {
+
             override fun loadFromDb(): LiveData<List<ResultsItem>> {
                 return moviesDao.getMoviesFromDatabase()
             }

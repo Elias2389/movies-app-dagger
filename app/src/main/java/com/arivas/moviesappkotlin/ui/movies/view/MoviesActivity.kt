@@ -55,7 +55,8 @@ class MoviesActivity : AppCompatActivity() {
         moviesViewModel
             .getPopularMovies()
             .observe(this, Observer {
-                it.data?.let { result -> successPopularMovies(result) }
+                it
+                //it.data?.let { result -> successPopularMovies(result) }
         })
         showLoading()
     }

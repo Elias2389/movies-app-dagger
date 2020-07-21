@@ -12,19 +12,20 @@ import com.arivas.moviesappkotlin.ui.movies.paging.MoviesDataSource
 import com.arivas.moviesappkotlin.ui.movies.paging.MoviesDataSourceFactory
 import com.arivas.moviesappkotlin.ui.movies.repository.MoviesRepository
 
-class MoviesViewModel(private val moviesRepository: MoviesRepository): ViewModel() {
+class MoviesViewModel(private val moviesRepository: MoviesRepository,
+                        private val moviesDataSourceFactory: MoviesDataSourceFactory): ViewModel() {
 
     lateinit var resultList:LiveData<PagedList<ResultsItem>>
-    private var moviesDataSourceFactory: MoviesDataSourceFactory = MoviesDataSourceFactory()
 
-    fun getPopularMovies(): LiveData<PagedList<ResultsItem>> {
+
+    fun getPageList(): LiveData<PagedList<ResultsItem>> {
         val config = PagedList.Config.Builder()
-            .setPageSize(10)
+            //.setPageSize(10)
+            .setMaxSize(3)
             .setEnablePlaceholders(false)
             .build()
 
         resultList = LivePagedListBuilder<Long, ResultsItem>(moviesDataSourceFactory, config).build()
-
         return resultList
     }
 }

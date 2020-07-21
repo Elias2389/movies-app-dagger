@@ -28,21 +28,21 @@ class MoviesActivity : AppCompatActivity() {
     @Inject lateinit var factory: MoviesViewModelFactory<MoviesViewModel>
     @Inject lateinit var moviesViewModel: MoviesViewModel
     @Inject lateinit var moviesRepository: MoviesRepository
-    private lateinit var moviesList: List<ResultsItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding.root)
-
+        adapter = PopularMoviesRecyclerView()
         setInjectComponent()
         setup()
         getMovies()
     }
 
     private fun setup() {
-        setupSearchView()
+        //setupSearchView()
+        showLoading()
         handlerCollapsing()
         moviesViewModel = getViewModelProvider()
     }
@@ -53,12 +53,11 @@ class MoviesActivity : AppCompatActivity() {
 
     private fun getMovies() {
         moviesViewModel
-            .getPopularMovies()
+            .getPageList()
             .observe(this, Observer {
-                it
-                //it.data?.let { result -> successPopularMovies(result) }
+                adapter.submitList(it)
         })
-        showLoading()
+        successPopularMovies()
     }
 
     private fun getViewModelProvider(): MoviesViewModel {
@@ -67,8 +66,7 @@ class MoviesActivity : AppCompatActivity() {
             .get(MoviesViewModel::class.java)
     }
 
-    private fun successPopularMovies(movies: List<ResultsItem>) {
-       moviesList = movies
+    private fun successPopularMovies() {
        hideLoading()
        setupAdapter()
     }
@@ -76,7 +74,7 @@ class MoviesActivity : AppCompatActivity() {
     private fun setupAdapter() {
         layoutManager = androidx.recyclerview.widget.GridLayoutManager(this, 3)
         mainBinding.contentView.recyclerView.layoutManager = layoutManager
-        adapter = PopularMoviesRecyclerView(moviesList, this)
+        adapter.setData(this)
         mainBinding.contentView.recyclerView.adapter = adapter
     }
 
@@ -117,21 +115,21 @@ class MoviesActivity : AppCompatActivity() {
         })
     }
 
-    private fun setupSearchView() {
-        mainBinding.searchMovies.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                adapter.filter.filter(query)
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                adapter.filter.filter(newText)
-                return false
-            }
-        })
-
-        mainBinding.searchMovies.setOnClickListener {
-            mainBinding.searchMovies.setIconified(false)
-        }
-    }
+//    private fun setupSearchView() {
+//        mainBinding.searchMovies.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                adapter.filter.filter(query)
+//                return false
+//            }
+//
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//                adapter.filter.filter(newText)
+//                return false
+//            }
+//        })
+//
+//        mainBinding.searchMovies.setOnClickListener {
+//            mainBinding.searchMovies.setIconified(false)
+//        }
+//    }
 }

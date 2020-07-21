@@ -2,14 +2,14 @@ package com.arivas.moviesappkotlin.ui.movies.paging
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
-import com.arivas.moviesappkotlin.common.dto.MoviesResponse
+import com.arivas.moviesappkotlin.common.dto.ResultsItem
 
-class MoviesDataSourceFactory: DataSource.Factory<Long, MoviesResponse>() {
-    var movies: MutableLiveData<MoviesDataSource> = MutableLiveData()
+class MoviesDataSourceFactory: DataSource.Factory<Long, ResultsItem>() {
+    private val moviesDataSourceLiveData = MutableLiveData<MoviesDataSource>()
 
-    override fun create(): DataSource<Long, MoviesResponse> {
+    override fun create(): DataSource<Long, ResultsItem> {
         val moviesDataSource = MoviesDataSource()
-        movies.postValue(moviesDataSource)
-        return null!!
+        moviesDataSourceLiveData.postValue(moviesDataSource)
+        return moviesDataSource
     }
 }

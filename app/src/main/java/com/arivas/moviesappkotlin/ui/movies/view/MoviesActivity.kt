@@ -130,7 +130,7 @@ class MoviesActivity : AppCompatActivity() {
         })
 
         mainBinding.searchMovies.setOnClickListener {
-            mainBinding.searchMovies.setIconified(false)
+            mainBinding.searchMovies.isIconified = false
         }
     }
 }

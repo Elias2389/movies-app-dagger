@@ -27,7 +27,7 @@ import com.bumptech.glide.Glide
 
 
 class PopularMoviesRecyclerView: PagedListAdapter<ResultsItem,
-        PopularMoviesRecyclerView.ViewHolder>(resultItemDiffCallback) {
+        PopularMoviesRecyclerView.ViewHolder>(resultItemDiffCallback), Filterable {
 
     var context: Context? = null
 
@@ -78,11 +78,11 @@ class PopularMoviesRecyclerView: PagedListAdapter<ResultsItem,
 
     }
 
-//    override fun getFilter(): Filter {
-//        moviesList.clear()
-//        moviesList.addAll(moviesList)
-//        return CustomFilter(this, moviesList)
-//    }
+    override fun getFilter(): Filter {
+        currentList?.clear()
+        currentList?.addAll(currentList!!)
+        return CustomFilter(this, currentList!!)
+    }
 
 
     companion object {

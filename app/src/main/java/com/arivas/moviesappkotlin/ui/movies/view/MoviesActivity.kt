@@ -41,7 +41,7 @@ class MoviesActivity : AppCompatActivity() {
     }
 
     private fun setup() {
-        //setupSearchView()
+        setupSearchView()
         showLoading()
         handlerCollapsing()
         moviesViewModel = getViewModelProvider()
@@ -115,21 +115,21 @@ class MoviesActivity : AppCompatActivity() {
         })
     }
 
-//    private fun setupSearchView() {
-//        mainBinding.searchMovies.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                adapter.filter.filter(query)
-//                return false
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                adapter.filter.filter(newText)
-//                return false
-//            }
-//        })
-//
-//        mainBinding.searchMovies.setOnClickListener {
-//            mainBinding.searchMovies.setIconified(false)
-//        }
-//    }
+    private fun setupSearchView() {
+        mainBinding.searchMovies.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                adapter.filter.filter(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter.filter(newText)
+                return false
+            }
+        })
+
+        mainBinding.searchMovies.setOnClickListener {
+            mainBinding.searchMovies.setIconified(false)
+        }
+    }
 }

@@ -10,8 +10,8 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class MoviesDataSource(val moviesServices: MoviesServices): PageKeyedDataSource<Long, ResultsItem>() {
-    private val FIRST_PAGE: Long = 1
+class MoviesDataSource(private val moviesServices: MoviesServices): PageKeyedDataSource<Long, ResultsItem>() {
+    private val SECOND_PAGE: Long = 2L
     private val PAGE_SIZE: Int = 4
 
     @SuppressLint("CheckResult")
@@ -21,7 +21,7 @@ class MoviesDataSource(val moviesServices: MoviesServices): PageKeyedDataSource<
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe({ response ->
-                callback.onResult(response.results,null, 2L)
+                callback.onResult(response.results,null, SECOND_PAGE)
             },{ error ->
                 Log.e("Error loadInitial:", error.message)
             })
@@ -41,13 +41,11 @@ class MoviesDataSource(val moviesServices: MoviesServices): PageKeyedDataSource<
 
     @SuppressLint("CheckResult")
     override fun loadAfter(params: LoadParams<Long>, callback: LoadCallback<Long, ResultsItem>) {
-        val a = params.key
         getCall(params.key.toInt())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe({ response ->
-                callback.onResult(response.results, params.key + 1)
-
+                    callback.onResult(response.results, params.key + 1)
             },{ error ->
                 Log.e("Error loadAfter:", error.message)
             })

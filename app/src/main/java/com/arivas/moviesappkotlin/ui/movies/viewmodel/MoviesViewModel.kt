@@ -21,7 +21,7 @@ class MoviesViewModel(private val moviesRepository: MoviesRepository,
     fun getPageList(): LiveData<PagedList<ResultsItem>> {
         val config = PagedList.Config.Builder()
             //.setPageSize(10)
-            .setMaxSize(3)
+            .setMaxSize(10)
             .setEnablePlaceholders(false)
             .build()
 

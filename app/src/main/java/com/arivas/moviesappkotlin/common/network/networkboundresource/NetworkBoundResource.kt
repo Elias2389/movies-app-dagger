@@ -14,8 +14,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 
-abstract class NetworkBoundResource<ResultType, RequestType> {
-    @MainThread constructor()
+abstract class NetworkBoundResource<ResultType, RequestType> @MainThread constructor() {
     private val result = MediatorLiveData<Resource<ResultType>>()
 
     init {

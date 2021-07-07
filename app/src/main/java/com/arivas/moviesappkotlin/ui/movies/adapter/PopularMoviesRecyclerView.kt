@@ -16,6 +16,8 @@ import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import com.arivas.moviesappkotlin.BuildConfig
 import com.arivas.moviesappkotlin.R
 import com.arivas.moviesappkotlin.common.dto.ResultsItem
@@ -24,13 +26,13 @@ import com.arivas.moviesappkotlin.ui.moviesdetail.view.MoviesDetailActivity
 import com.bumptech.glide.Glide
 
 
-class PopularMoviesRecyclerView(private val results: List<ResultsItem>,
-                                private val context: Context):
-    RecyclerView.Adapter<PopularMoviesRecyclerView.ViewHolder>(), Filterable {
-    var moviesList: ArrayList<ResultsItem> = ArrayList()
+class PopularMoviesRecyclerView: PagedListAdapter<ResultsItem,
+        PopularMoviesRecyclerView.ViewHolder>(resultItemDiffCallback), Filterable {
 
-    init {
-        moviesList.addAll(results)
+    var context: Context? = null
+
+    fun setData(context: Context) {
+        this.context = context
     }
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
@@ -42,13 +44,9 @@ class PopularMoviesRecyclerView(private val results: List<ResultsItem>,
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        return moviesList.size
-    }
-
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-        viewHolder.bind(moviesList.get(i), context)
+        viewHolder.bind(getItem(i)!!, this.context!!)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -81,9 +79,22 @@ class PopularMoviesRecyclerView(private val results: List<ResultsItem>,
     }
 
     override fun getFilter(): Filter {
-        moviesList.clear()
-        moviesList.addAll(results)
-        return CustomFilter(this, moviesList)
+        currentList?.clear()
+        currentList?.addAll(currentList!!)
+        return CustomFilter(this, currentList!!)
+    }
+
+
+    companion object {
+        val resultItemDiffCallback = object : DiffUtil.ItemCallback<ResultsItem>() {
+            override fun areItemsTheSame(oldItem: ResultsItem, newItem: ResultsItem): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: ResultsItem, newItem: ResultsItem): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 
 }

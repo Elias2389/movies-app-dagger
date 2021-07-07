@@ -7,6 +7,8 @@ import com.arivas.moviesappkotlin.common.API_KEY
 import com.arivas.moviesappkotlin.common.db.AppDatabase
 import com.arivas.moviesappkotlin.common.db.MoviesDao
 import com.arivas.moviesappkotlin.common.network.services.MoviesServices
+import com.arivas.moviesappkotlin.ui.movies.paging.MoviesDataSource
+import com.arivas.moviesappkotlin.ui.movies.paging.MoviesDataSourceFactory
 import com.arivas.moviesappkotlin.ui.movies.repository.MoviesRepository
 import com.arivas.moviesappkotlin.ui.movies.repository.MoviesRepositoryImpl
 import com.arivas.moviesappkotlin.ui.movies.viewmodel.MoviesViewModel
@@ -92,7 +94,20 @@ class ApplicationModule(private val application: Application) {
 
     @Provides
     @Singleton
-    fun provideMoviesViewModel(moviesRepository: MoviesRepository): MoviesViewModel {
-        return MoviesViewModel(moviesRepository)
+    fun provideMoviesDataSource(moviesServices: MoviesServices): MoviesDataSource {
+        return MoviesDataSource(moviesServices)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMoviesDataSourceFactory(moviesDataSource: MoviesDataSource): MoviesDataSourceFactory {
+        return MoviesDataSourceFactory(moviesDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMoviesViewModel(moviesRepository: MoviesRepository,
+                               moviesDataSourceFactory: MoviesDataSourceFactory): MoviesViewModel {
+        return MoviesViewModel(moviesRepository, moviesDataSourceFactory)
     }
 }
